@@ -28,29 +28,29 @@
 - pip (менеджер пакетов Python)
 
 ## Установка и запуск
-### 2️⃣ Создание виртуального окружения
+### Создание виртуального окружения
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
-### 3️⃣ Установка зависимостей
+### Установка зависимостей
 ```bash
 pip install -r requirements.txt
 ```
-### 4️⃣ Настройка окружения
+### Настройка окружения
 Скопируйте файл .env.example в .env:
 ```bash
 copy .env.example .env
 ```
-### 5️⃣ Инициализация базы данных
+### Инициализация базы данных
 ```bash
 python init_db.py
 ```
-### 6️⃣ Запуск приложения
+### Запуск приложения
 ```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
-## 👥 Тестовые пользователи
+## Тестовые пользователи
 
 | Пользователь | Пароль | Роль |
 |--------------|--------|------|
@@ -58,9 +58,9 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 | testuser | testpass | user |
 | guestuser | guestpass | guest |
 
-## 🔧 Команды для тестирования через curl
+## Команды для тестирования через curl
 
-### 👤 Регистрация и аутентификация
+### Регистрация и аутентификация
 
 # Регистрация нового пользователя
 ```bash
@@ -99,7 +99,7 @@ curl -X GET http://localhost:8000/admin/resource \
   -H "Authorization: Bearer ADMIN_TOKEN"
 ```
 
-### 💾 Работа с SQLite и Todo
+### Работа с SQLite и Todo
 
 # Регистрация в SQLite
 ```bash
@@ -128,7 +128,7 @@ curl -X PUT http://localhost:8000/todos/1 \
 curl -X DELETE http://localhost:8000/todos/1
 ```
 
-## 📁 Структура проекта
+## Структура проекта
 
 ```
 .env.example        # Пример конфигурации окружения
@@ -145,7 +145,7 @@ init_db.py          # Инициализация базы данных
 todos.db            # База данных SQLite
 ```
 
-## ⚙️ Конфигурация окружения
+## Конфигурация окружения
 
 Файл .env должен содержать следующие переменные:
 
@@ -157,18 +157,16 @@ DOCS_PASSWORD=secret123
 JWT_SECRET_KEY=your-super-secret-key-change-this-in-production
 ```
 
-**⚠️ Важно**: Никогда не публикуйте реальные секреты в репозитории!
-
-## 📊 Ожидаемые ответы API
+## Ожидаемые ответы API
 
 ### Успешные ответы
 
 | Операция | Статус | Ответ |
 |----------|--------|-------|
-| Регистрация | 201 | **\`{"message":"New user created"}\`** |
-| JWT логин | 200 | **\`{"access_token":"...","token_type":"bearer"}\`** |
-| Доступ к ресурсу | 200 | **\`{"message":"Access granted"}\`** |
-| Создание Todo | 201 | **\`{"id":1,"title":"...","description":"...","completed":false}\`** |
+| Регистрация | 201 | {"message":"New user created"} |
+| JWT логин | 200 | {"access_token":"...","token_type":"bearer"} |
+| Доступ к ресурсу | 200 | {"message":"Access granted"} |
+| Создание Todo | 201 | {"id":1,"title":"...","description":"...","completed":false} |
 
 ### Ошибки
 
@@ -180,53 +178,10 @@ JWT_SECRET_KEY=your-super-secret-key-change-this-in-production
 | Не найдено | 404 | Not Found |
 | Превышение лимита запросов | 429 | Too Many Requests |
 
-## 🛡️ Безопасность
+## Безопасность
 
 - **Хеширование паролей**: bcrypt
-- **Защита от тайминг-атак**: secrets.compare_digest()
 - **Rate limiting**:
-  - **\`/register\`** - 1 запрос в минуту
-  - **\`/login\`** - 5 запросов в минуту
+  - **/register** - 1 запрос в минуту
+  - **/login** - 5 запросов в минуту
 - **JWT токены**: истекают через 30 минут
-
-## 🛠️ Используемые технологии
-
-| Технология | Назначение |
-|------------|------------|
-| FastAPI | Веб-фреймворк |
-| SQLite | База данных |
-| PyJWT | JWT токены |
-| PassLib + bcrypt | Хеширование паролей |
-| SlowAPI | Rate limiting |
-| Python-dotenv | Управление переменными окружения |
-
-## 🔧 Устранение неполадок
-
-### Проблема с bcrypt
-
-Если возникает ошибка **\`module 'bcrypt' has no attribute '__about__'\`**:
-
-**\`\`\`bash**
-pip uninstall bcrypt passlib -y
-pip install bcrypt==4.0.1 passlib==1.7.4
-**\`\`\`**
-
-### Порт уже используется
-
-**\`\`\`bash**
-uvicorn main:app --reload --port 8001
-**\`\`\`**
-
-### Проблемы с правами в PowerShell
-
-**\`\`\`powershell**
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-**\`\`\`**
-
-### Проверка работоспособности
-
-Если возникают проблемы, проверьте:
-
-- **✅** Запущен ли сервер (**\`uvicorn main:app --reload\`**)
-- **✅** Правильно ли настроен файл **\`.env\`**
-- **✅** Создана ли база данных (**\`python init_db.py\`**)
